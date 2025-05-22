@@ -1,8 +1,9 @@
 namespace coup {
 	class Player {
+		public:
+		virtual void start_turn();
 		void gather();
-		void tax();
-		void invest();
+		virtual void tax();
 		void bribe();
 		int coins();
 		void arrest(Player target);
