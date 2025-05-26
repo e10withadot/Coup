@@ -1,4 +1,4 @@
-#include "Player.hpp"
+#include "Game.hpp"
 using namespace coup;
 
 namespace coup {
@@ -8,6 +8,6 @@ namespace coup {
 	class Judge : public Player {
 	public:
 		void undo_bribe();
-		void sanction_resp() override;
+		void sanction_resp(Player* sender) override;
 	};
 }

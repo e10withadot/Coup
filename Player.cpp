@@ -1,20 +1,25 @@
 #include "Game.hpp"
-#include <cstddef>
 using namespace coup;
+#include <cstddef>
+#include <stdexcept>
+using namespace std;
 
 void Player::gather() {
+    if (!ECONOMY) throw invalid_argument("Economy commands not allowed.");
     this->COINS++;
 }
 
 Action Player::tax() {
+    if (!ECONOMY) throw invalid_argument("Economy commands not allowed.");
     this->COINS+=2;
     return Action(this, NULL, 2);
 }
 
-Action Player::arrest(Player target) {
-    int amount = target.arrest_resp();
+Action Player::arrest(Player* target) {
+    if (!ARREST) throw invalid_argument("Arrest not allowed.");
+    int amount = target->arrest_resp();
     this->COINS+=amount;
-    return Action(this, &target, amount);
+    return Action(this, target, amount);
 }
 
 int Player::arrest_resp() {
@@ -22,18 +27,23 @@ int Player::arrest_resp() {
     return 1;
 }
 
-void Player::sanction(Player target) {
-    this->COINS-=3;
-    target.sanction_resp();
+Action Player::bribe() {
+    this->ADDITIONAL = true;
+    return Action(this, NULL, 0);
 }
 
-void Player::sanction_resp() {
+void Player::sanction(Player* target) {
+    this->COINS-=3;
+    target->sanction_resp(this);
+}
+
+void Player::sanction_resp(Player* sender) {
     this->ECONOMY= false;
 }
 
-Action Player::coup(Player target) {
-    target.coup_resp();
-    return Action(this, &target, 0);
+Action Player::coup(Player* target) {
+    target->coup_resp();
+    return Action(this, target, 0);
 }
 
 void Player::coup_resp() {
@@ -44,7 +54,7 @@ string Player::name() {
     return this->NAME;
 }
 
-int Player::get_coins() {
+int Player::coins() {
     return this->COINS;
 }
 

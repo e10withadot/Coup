@@ -1,4 +1,4 @@
-#include "Player.hpp"
+#include "Game.hpp"
 using namespace coup;
 
 namespace coup {
@@ -7,8 +7,8 @@ namespace coup {
 	* This action costs no coins and does not count as a turn.
 	*/
 	class Spy : public Player {
-	public:
-		void see_coins(Player target);
-		void undo_arrest();
+		public:
+			int see_coins(Player* target);
+			void block_arrest(Player* target);
 	};
 }

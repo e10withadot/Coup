@@ -1,4 +1,5 @@
 #include "Governor.hpp"
+using namespace coup;
 
 Action Governor::tax() {
     this->COINS+=3;
@@ -6,8 +7,8 @@ Action Governor::tax() {
 }
 
 void Governor::undo_tax() {
-    Action last_tax = this->CUR_GAME->get_last(TAX);
+    Action last_tax = this->game()->get_last(TAX);
     Player* target = last_tax.reciever;
     int amount = last_tax.coin_change;
-    target->mod_coins(-amount)
+    target->mod_coins(-amount);
 }

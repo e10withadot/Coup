@@ -6,11 +6,13 @@ namespace coup {
 	class Player {
 		protected:
 			string NAME;
-			int COINS = 0;
 			Game* CUR_GAME;
-			bool ECONOMY = true;
-			bool LOST = false;
 		public:
+			int COINS = 0;
+			bool ECONOMY = true;
+			bool ARREST = true;
+			bool ADDITIONAL = false;
+			bool LOST = false;
 			/*
 			 * Function that runs when Player's turn starts.
 			*/
@@ -31,7 +33,7 @@ namespace coup {
 			 * Get one coin from a different player.
 			 * Cannot be used on the same player twice in a row.
 			*/
-			Action arrest(Player target);
+			Action arrest(Player* target);
 			/*
 			 * Player's response to arrest.
 			 */
@@ -39,15 +41,15 @@ namespace coup {
 			/* 
 			 * Blocks a player from performing economic actions. Costs 3 coins.
 			*/
-			virtual void sanction(Player target);
+			virtual void sanction(Player* target);
 			/*
 			 * Player's response to sanction.
 			 */
-			virtual void sanction_resp();
+			virtual void sanction_resp(Player* sender);
 			/*
 			 * Eliminates a player from the game. Costs 7 coins.
 			*/
-			Action coup(Player target);
+			Action coup(Player* target);
 			/*
 			 * Player's response to coup.
 			 */
@@ -59,7 +61,7 @@ namespace coup {
 			/*
 			 * Get the player's current amount of coins.
 			*/
-			int get_coins();
+			int coins();
 			/*
 			 * Modify the player's current amount of coins.
 			*/

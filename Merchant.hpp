@@ -1,4 +1,4 @@
-#include "Player.hpp"
+#include "Game.hpp"
 using namespace coup;
 
 namespace coup {
