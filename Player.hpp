@@ -1,4 +1,3 @@
-
 namespace coup {
 	class Player;
 	enum ActionType {
@@ -24,7 +23,8 @@ namespace coup {
 		private:
 			int COINS = 0;
 			Action LAST_ACTION;
-			bool economy = true;
+			bool ECONOMY = true;
+			bool LOST = false;
 		public:
 			/*
 			 * Function that runs when Player's turn starts.

@@ -30,12 +30,16 @@ Action Player::sanction(Player target) {
 }
 
 void Player::sanction_resp() {
-    this->economy= false;
+    this->ECONOMY= false;
 }
 
 Action Player::coup(Player target) {
     target.coup_resp();
     return Action(COUP, &target, 0);
+}
+
+void Player::coup_resp() {
+    this->LOST= true;
 }
 
 int Player::coins() {
