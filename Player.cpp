@@ -42,6 +42,10 @@ void Player::coup_resp() {
     this->LOST= true;
 }
 
+string Player::name() {
+    return this->NAME;
+}
+
 int Player::coins() {
     return this->COINS;
 }

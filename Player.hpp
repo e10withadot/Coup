@@ -1,3 +1,5 @@
+#include <string>
+using namespace std;
 namespace coup {
 	class Player;
 	enum ActionType {
@@ -21,6 +23,7 @@ namespace coup {
 	};
 	class Player {
 		private:
+			string NAME;
 			int COINS = 0;
 			Action LAST_ACTION;
 			bool ECONOMY = true;
@@ -67,6 +70,10 @@ namespace coup {
 			 * Player's response to coup.
 			 */
 			virtual void coup_resp();
+			/* 
+			 * Get the player's name.
+			 */
+			string name();
 			/*
 			 * Get the player's current amount of coins.
 			*/
