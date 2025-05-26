@@ -8,7 +8,7 @@ namespace coup {
 	*/
 	class General : public Player {
 	public:
-		void block_coup();
+		void undo_coup();
 		int arrest_resp() override;
 	};
 }
