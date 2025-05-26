@@ -1,31 +1,11 @@
 #include <string>
 using namespace std;
 namespace coup {
-	class Player;
-	enum ActionType {
-		GATHER,
-		TAX,
-		ARREST,
-		SANCTION,
-		INVEST,
-		COUP
-	};
-	class Action {
-		public:
-		Action(ActionType type, Player* target, int coin_change) {
-			this->type = type;
-			this->target = target;
-			this->coin_change = coin_change;
-		}
-		ActionType type;
-		Player* target;
-		int coin_change;
-	};
+	class Action;
 	class Player {
-		private:
+		protected:
 			string NAME;
 			int COINS = 0;
-			Action LAST_ACTION;
 			bool ECONOMY = true;
 			bool LOST = false;
 		public:
@@ -36,15 +16,15 @@ namespace coup {
 			/*
 			 * Get one coin from the pool.
 			*/
-			Action gather();
+			void gather();
 			/*
 			 * Get two coins from the pool.
 			*/
 			virtual Action tax();
 			/*
-			 * Pay four coins to perform an additional action.
+			 * Pay four coins to perform an additional action in the next turn.
 			*/
-			void bribe();
+			Action bribe();
 			/*
 			 * Get one coin from a different player.
 			 * Cannot be used on the same player twice in a row.
@@ -57,7 +37,7 @@ namespace coup {
 			/* 
 			 * Blocks a player from performing economic actions. Costs 3 coins.
 			*/
-			Action sanction(Player target);
+			virtual void sanction(Player target);
 			/*
 			 * Player's response to sanction.
 			 */
@@ -78,9 +58,5 @@ namespace coup {
 			 * Get the player's current amount of coins.
 			*/
 			int coins();
-			/*
-			 * Get the player's last action.
-			*/
-			Action last_action();
 	};
 }

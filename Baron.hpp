@@ -8,7 +8,7 @@ namespace coup {
 	 */
 	class Baron : public Player {
 	public:
-		Action invest();
-		Action sanction() override;
+		void invest();
+		void sanction() override;
 	};
 }
