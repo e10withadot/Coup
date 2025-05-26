@@ -44,6 +44,14 @@ string Player::name() {
     return this->NAME;
 }
 
-int Player::coins() {
+int Player::get_coins() {
     return this->COINS;
+}
+
+void Player::mod_coins(int mod) {
+    this->COINS+=mod;
+}
+
+Game* Player::game() {
+    return this->CUR_GAME;
 }

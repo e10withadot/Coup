@@ -1,11 +1,13 @@
 #include <string>
 using namespace std;
 namespace coup {
+	class Game;
 	class Action;
 	class Player {
 		protected:
 			string NAME;
 			int COINS = 0;
+			Game* CUR_GAME;
 			bool ECONOMY = true;
 			bool LOST = false;
 		public:
@@ -57,6 +59,14 @@ namespace coup {
 			/*
 			 * Get the player's current amount of coins.
 			*/
-			int coins();
+			int get_coins();
+			/*
+			 * Modify the player's current amount of coins.
+			*/
+			void mod_coins(int mod);
+			/*
+			 * Get the current game.
+			*/
+			Game* game();
 	};
 }
