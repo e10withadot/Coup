@@ -5,11 +5,14 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QComboBox>
+#include <qglobal.h>
 
 namespace gui {
 	class MainWindow : public QWidget {
 	    public:
 		QVBoxLayout* layout;
+		QVector<QWidget*> playerWidgets;
+		QPushButton* sub_button;
 		MainWindow() {
 			this->layout = new QVBoxLayout;
 			this->setWindowTitle("Coup");
@@ -17,19 +20,25 @@ namespace gui {
 			label->setAlignment(Qt::AlignHCenter);
 			label->setTextFormat(Qt::MarkdownText);
 			QPushButton* add_button = new QPushButton("+");
+			sub_button = new QPushButton("-");
 			QObject::connect(add_button, &QPushButton::clicked, this, &MainWindow::addPlayer);
+			QObject::connect(sub_button, &QPushButton::clicked, this, &MainWindow::subPlayer);
 			QPushButton* play = new QPushButton("Play");
 			this->layout->addWidget(label);
 			this->layout->addWidget(add_button);
+			this->layout->addWidget(sub_button);
 			this->layout->addWidget(play);
 			this->setLayout(this->layout);
-		addPlayer();
+			addPlayer();
+			sub_button->setEnabled(false);
 		}
 	    private slots:
 		int pnum = 1;
 		void addPlayer() {
 			QLabel* plabel = new QLabel(QString("Player %1").arg(this->pnum));
 			this->pnum++;
+			if (!sub_button->isEnabled())
+				sub_button->setEnabled(true);
 			QComboBox *player_sel = new QComboBox();
 			player_sel->addItem("Human");
 			player_sel->addItem("CPU");
@@ -53,6 +62,17 @@ namespace gui {
 			h_layout->addWidget(role_sel);
 			player_wid->setLayout(h_layout);
 			layout->insertWidget(layout->count() -1, player_wid);
+			playerWidgets.append(player_wid);
+		}
+		void subPlayer() {
+			if (playerWidgets.size() > 1) {
+				QWidget* lastpl = playerWidgets.takeLast();
+				layout->removeWidget(lastpl);
+				delete lastpl;
+				this->pnum--;
+				if (playerWidgets.size() == 1)
+					sub_button->setEnabled(false);
+			}
 		}
 	};
 }
