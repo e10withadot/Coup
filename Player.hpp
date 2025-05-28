@@ -7,12 +7,14 @@ namespace coup {
 		protected:
 			string NAME;
 			Game* CUR_GAME;
+			bool CPU;
 		public:
 			int COINS = 0;
 			bool ECONOMY = true;
 			bool ARREST = true;
 			bool ADDITIONAL = false;
 			bool LOST = false;
+			Player(bool CPU) : CPU(CPU) {};
 			/*
 			 * Function that runs when Player's turn starts.
 			*/
