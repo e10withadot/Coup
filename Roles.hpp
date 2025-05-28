@@ -37,6 +37,15 @@ namespace coup {
 		int arrest_resp() override;
 	};
 	/*
+	 * Can "invest" 3 coins and receive 6 coins in return. 
+	 * Additionally, if attacked with a sanction, receives one coin as compensation.
+	 */
+	class Baron : public Player {
+	public:
+		void invest();
+		void sanction_resp(Player* sender) override;
+	};
+	/*
 	 * Can pay 5 coins to undo a coup against another player (or themselves).
 	 * Additionally, if affected by arrest, receives back the coin that was taken.
 	*/
