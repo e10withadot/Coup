@@ -5,30 +5,35 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QComboBox>
-#include <qglobal.h>
+#include <vector>
+using namespace std;
+#include "Roles.hpp"
+using namespace coup;
 
 namespace gui {
 	class MainWindow : public QWidget {
 	    public:
+		QComboBox *player_sel, *role_sel;
 		QVBoxLayout* layout;
 		QVector<QWidget*> playerWidgets;
 		QPushButton* sub_button;
 		MainWindow() {
-			this->layout = new QVBoxLayout;
-			this->setWindowTitle("Coup");
+			layout = new QVBoxLayout;
+			setWindowTitle("Coup");
 			QLabel* label = new QLabel("# Welcome to Coup!\nPick players and choose roles!\n###### To see what roles do, hover on them.");
 			label->setAlignment(Qt::AlignHCenter);
 			label->setTextFormat(Qt::MarkdownText);
 			QPushButton* add_button = new QPushButton("+");
 			sub_button = new QPushButton("-");
+			QPushButton* play = new QPushButton("Play");
 			QObject::connect(add_button, &QPushButton::clicked, this, &MainWindow::addPlayer);
 			QObject::connect(sub_button, &QPushButton::clicked, this, &MainWindow::subPlayer);
-			QPushButton* play = new QPushButton("Play");
-			this->layout->addWidget(label);
-			this->layout->addWidget(add_button);
-			this->layout->addWidget(sub_button);
-			this->layout->addWidget(play);
-			this->setLayout(this->layout);
+			QObject::connect(play, &QPushButton::clicked, this, &MainWindow::startGame);
+			layout->addWidget(label);
+			layout->addWidget(add_button);
+			layout->addWidget(sub_button);
+			layout->addWidget(play);
+			setLayout(layout);
 			addPlayer();
 			sub_button->setEnabled(false);
 		}
@@ -39,10 +44,8 @@ namespace gui {
 			this->pnum++;
 			if (!sub_button->isEnabled())
 				sub_button->setEnabled(true);
-			QComboBox *player_sel = new QComboBox();
 			player_sel->addItem("Human");
 			player_sel->addItem("CPU");
-			QComboBox *role_sel = new QComboBox();
 			role_sel->addItem("Spy");
 			role_sel->setItemData(0, "Can see the number of coins another player has, and blocks arrest.", Qt::ToolTipRole);
 			role_sel->addItem("Governor");
@@ -65,13 +68,40 @@ namespace gui {
 			playerWidgets.append(player_wid);
 		}
 		void subPlayer() {
-			if (playerWidgets.size() > 1) {
-				QWidget* lastpl = playerWidgets.takeLast();
-				layout->removeWidget(lastpl);
-				delete lastpl;
-				this->pnum--;
-				if (playerWidgets.size() == 1)
-					sub_button->setEnabled(false);
+			QWidget* lastpl = playerWidgets.takeLast();
+			layout->removeWidget(lastpl);
+			delete lastpl;
+			this->pnum--;
+			if (pnum == 1)
+				sub_button->setEnabled(false);
+		}
+		void startGame() {
+			vector<Player> players;
+			for (int i = 0; i < pnum; i++) {
+				QComboBox* pl_sel = qobject_cast<QComboBox *>(playerWidgets[i]->layout()->itemAt(1)->widget());
+				QComboBox* rl_sel = qobject_cast<QComboBox *>(playerWidgets[i]->layout()->itemAt(2)->widget());
+				int role_n = rl_sel->currentIndex();
+				bool is_cpu = pl_sel->currentIndex();
+				switch (role_n) {
+					case 0:
+						players.push_back(new Spy(is_cpu));
+						break;
+					case 1:
+						players.push_back(new Governor(is_cpu));
+						break;
+					case 2:
+						players.push_back(new Judge(is_cpu));
+						break;
+					case 3:
+						players.push_back(new Merchant(is_cpu));
+						break;
+					case 4:
+						players.push_back(new General(is_cpu));
+						break;
+					case 5:
+						players.push_back(new Baron(is_cpu));
+						break;
+				}
 			}
 		}
 	};

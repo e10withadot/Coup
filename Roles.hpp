@@ -8,6 +8,7 @@ namespace coup {
 	*/
 	class Spy : public Player {
 		public:
+			using Player::Player;
 			int see_coins(Player* target);
 			void block_arrest(Player* target);
 	};
@@ -16,6 +17,7 @@ namespace coup {
 	 */
 	class Governor : public Player {
 	public:
+		using Player::Player;
 		Action tax() override;
 		void undo_tax();
 	};
@@ -24,6 +26,7 @@ namespace coup {
 	 */
 	class Judge : public Player {
 	public:
+		using Player::Player;
 		void undo_bribe();
 		void sanction_resp(Player* sender) override;
 	};
@@ -33,6 +36,7 @@ namespace coup {
 	*/
 	class Merchant : public Player {
 	public:
+		using Player::Player;
 		void start_turn() override;
 		int arrest_resp() override;
 	};
@@ -42,6 +46,7 @@ namespace coup {
 	 */
 	class Baron : public Player {
 	public:
+		using Player::Player;
 		void invest();
 		void sanction_resp(Player* sender) override;
 	};
@@ -51,6 +56,7 @@ namespace coup {
 	*/
 	class General : public Player {
 	public:
+		using Player::Player;
 		void undo_coup();
 		int arrest_resp() override;
 	};
