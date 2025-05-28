@@ -7,8 +7,8 @@ namespace coup {
 	 * Additionally, if attacked with a sanction, receives one coin as compensation.
 	 */
 	class Baron : public Player {
-	public:
-		void invest();
-		void sanction() override;
+		public:
+			void invest();
+			void sanction_resp(Player* sender) override;
 	};
 }
