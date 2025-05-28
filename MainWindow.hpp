@@ -11,13 +11,14 @@ using namespace coup;
 namespace gui {
 	class MainWindow : public QWidget {
 		public:
-			QComboBox *player_sel, *role_sel;
+			QComboBox *player_sel;
+			QComboBox *role_sel;
 			QVBoxLayout* layout;
 			QVector<QWidget*> playerWidgets;
 			QPushButton* sub_button;
 			MainWindow();
-			private slots:
-			int pnum = 1;
+		private slots:
+			int pnum;
 			void addPlayer();
 			void subPlayer();
 			void startGame();

@@ -4,6 +4,9 @@ using namespace coup;
 #include <stdexcept>
 using namespace std;
 
+void Player::start_turn() {
+}
+
 void Player::gather() {
     if (!ECONOMY) throw invalid_argument("Economy commands not allowed.");
     this->COINS++;

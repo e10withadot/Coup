@@ -4,31 +4,34 @@ using namespace gui;
 using namespace std;
 
 MainWindow::MainWindow() {
-    layout = new QVBoxLayout;
-    setWindowTitle("Coup");
-    QLabel* label = new QLabel("# Welcome to Coup!\nPick players and choose roles!\n###### To see what roles do, hover on them.");
-    label->setAlignment(Qt::AlignHCenter);
-    label->setTextFormat(Qt::MarkdownText);
-    QPushButton* add_button = new QPushButton("+");
-    sub_button = new QPushButton("-");
-    QPushButton* play = new QPushButton("Play");
-    QObject::connect(add_button, &QPushButton::clicked, this, &MainWindow::addPlayer);
-    QObject::connect(sub_button, &QPushButton::clicked, this, &MainWindow::subPlayer);
-    QObject::connect(play, &QPushButton::clicked, this, &MainWindow::startGame);
-    layout->addWidget(label);
-    layout->addWidget(add_button);
-    layout->addWidget(sub_button);
-    layout->addWidget(play);
-    setLayout(layout);
-    addPlayer();
-    sub_button->setEnabled(false);
+	pnum = 0;
+	layout = new QVBoxLayout;
+	setWindowTitle("Coup");
+	QLabel* label = new QLabel("# Welcome to Coup!\nPick players and choose roles!\n###### To see what roles do, hover on them.");
+	label->setAlignment(Qt::AlignHCenter);
+	label->setTextFormat(Qt::MarkdownText);
+	QPushButton* add_button = new QPushButton("+");
+	sub_button = new QPushButton("-");
+	QPushButton* play = new QPushButton("Play");
+	QObject::connect(add_button, &QPushButton::clicked, this, &MainWindow::addPlayer);
+	QObject::connect(sub_button, &QPushButton::clicked, this, &MainWindow::subPlayer);
+	QObject::connect(play, &QPushButton::clicked, this, &MainWindow::startGame);
+	layout->addWidget(label);
+	layout->addWidget(add_button);
+	layout->addWidget(sub_button);
+	layout->addWidget(play);
+	setLayout(layout);
+	addPlayer();
+	addPlayer();
+	sub_button->setEnabled(false);
 }
 
 void MainWindow::addPlayer() {
-	QLabel* plabel = new QLabel(QString("Player %1").arg(this->pnum));
-	this->pnum++;
+	QLabel* plabel = new QLabel(QString("Player %1").arg(++pnum));
 	if (!sub_button->isEnabled())
 		sub_button->setEnabled(true);
+	player_sel = new QComboBox;
+	role_sel = new QComboBox;
 	player_sel->addItem("Human");
 	player_sel->addItem("CPU");
 	role_sel->addItem("Spy");
@@ -58,7 +61,7 @@ void MainWindow::subPlayer() {
 	layout->removeWidget(lastpl);
 	delete lastpl;
 	this->pnum--;
-	if (pnum == 1)
+	if (pnum == 2)
 		sub_button->setEnabled(false);
 }
 

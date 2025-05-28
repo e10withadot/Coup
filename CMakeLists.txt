@@ -1,8 +1,18 @@
 cmake_minimum_required(VERSION 3.16)
 project(Coup LANGUAGES CXX)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
-add_executable(Coup main.cpp)
+set(SOURCES
+    main.cpp
+    MainWindow.cpp
+    Roles.cpp
+    Game.cpp
+    Player.cpp
+)
+
+add_executable(Coup ${SOURCES})
 target_link_libraries(Coup PRIVATE Qt6::Widgets)
