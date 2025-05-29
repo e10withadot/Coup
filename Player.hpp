@@ -7,13 +7,14 @@ namespace coup {
 		protected:
 			Game* CUR_GAME;
 			bool CPU;
+			int INDEX;
 		public:
 			int COINS = 0;
 			bool ECONOMY = true;
 			bool ARREST = true;
 			bool ADDITIONAL = false;
 			bool LOST = false;
-			Player(bool CPU) : CPU(CPU) {};
+			Player(int index, bool CPU) : CPU(CPU), INDEX(index) {};
 			/*
 			 * Function that runs when Player's turn starts.
 			*/
@@ -55,6 +56,10 @@ namespace coup {
 			 * Player's response to coup.
 			 */
 			virtual void coup_resp();
+			/*
+			 * Get the player's index.
+			 */
+			int index();
 			/*
 			 * Get the player's current amount of coins.
 			*/

@@ -69,7 +69,7 @@ void MainWindow::subPlayer() {
 }
 
 void MainWindow::startGame() {
-	vector<Player> players;
+	vector<Player*> players;
 	for (int i = 0; i < pnum; i++) {
 		QComboBox* pl_sel = qobject_cast<QComboBox *>(playerWidgets[i]->layout()->itemAt(1)->widget());
 		QComboBox* rl_sel = qobject_cast<QComboBox *>(playerWidgets[i]->layout()->itemAt(2)->widget());
@@ -77,22 +77,22 @@ void MainWindow::startGame() {
 		bool is_cpu = pl_sel->currentIndex();
 		switch (role_n) {
 			case 0:
-				players.push_back(new Spy(is_cpu));
+				players.push_back(new Spy(i, is_cpu));
 				break;
 			case 1:
-				players.push_back(new Governor(is_cpu));
+				players.push_back(new Governor(i, is_cpu));
 				break;
 			case 2:
-				players.push_back(new Judge(is_cpu));
+				players.push_back(new Judge(i, is_cpu));
 				break;
 			case 3:
-				players.push_back(new Merchant(is_cpu));
+				players.push_back(new Merchant(i, is_cpu));
 				break;
 			case 4:
-				players.push_back(new General(is_cpu));
+				players.push_back(new General(i, is_cpu));
 				break;
 			case 5:
-				players.push_back(new Baron(is_cpu));
+				players.push_back(new Baron(i, is_cpu));
 				break;
 			default:
 				throw std::invalid_argument("Invalid role.");

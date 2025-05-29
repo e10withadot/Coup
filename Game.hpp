@@ -23,9 +23,9 @@ namespace coup {
 	};
 	class Game {
 		private:
-			Player TURN = NULL;
+			Player* TURN = NULL;
 			vector<Player> PLAYERS;
-			Player WINNER = NULL;
+			Player* WINNER = NULL;
 			Action LAST_TAX;
 			Action LAST_ARREST;
 			Action LAST_BRIBE;
