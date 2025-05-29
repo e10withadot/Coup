@@ -1,6 +1,7 @@
 #include "MainWindow.hpp"
 using namespace gui;
 #include <vector>
+#include <stdexcept>
 using namespace std;
 
 MainWindow::MainWindow() {
@@ -91,7 +92,10 @@ void MainWindow::startGame() {
 			case 5:
 				players.push_back(new Baron(is_cpu));
 				break;
+			default:
+				throw std::invalid_argument("Invalid role.");
 		}
 	}
+	close();
 }
 
