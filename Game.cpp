@@ -1,7 +1,10 @@
 #include "Game.hpp"
+#include <qglobal.h>
+using namespace coup;
+#include <charconv>
 #include <stdexcept>
 #include <vector>
-using namespace coup;
+using namespace std;
 
 Action Game::get_last(ActionType type){
     switch (type) {
@@ -33,14 +36,14 @@ void Game::set_last(ActionType type, Action val){
     };
 }
 
-Player Game::turn() {
+Player* Game::turn() {
     return this->TURN;
 }
 
-vector<Player> Game::players() {
+vector<Player*> Game::players() {
     return this->PLAYERS;
 }
 
-string Game::winner() {
-    return this->WINNER.name();
+QString Game::winner() {
+    return (QString("Player %1")).arg(WINNER->index());
 }

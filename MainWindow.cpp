@@ -99,6 +99,6 @@ void MainWindow::startGame() {
 		}
 	}
 	close();
-	GameWindow* game_win;
+	GameWindow* game_win = new GameWindow(players);
 	game_win->show();
 }

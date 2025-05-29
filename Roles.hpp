@@ -1,3 +1,5 @@
+#ifndef ROLES_H
+#define ROLES_H
 #include "Game.hpp"
 #include "Player.hpp"
 using namespace coup;
@@ -62,3 +64,4 @@ namespace coup {
 		int arrest_resp() override;
 	};
 }
+#endif

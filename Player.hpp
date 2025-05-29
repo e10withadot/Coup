@@ -76,7 +76,7 @@ namespace coup {
 			/*
 			 * Get if player is a cpu.
 			 */
-			PlayerRole cpu();
+			bool cpu();
 			/*
 			 * Get the player's current amount of coins.
 			*/

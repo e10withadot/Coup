@@ -9,6 +9,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 set(SOURCES
     main.cpp
     MainWindow.cpp
+    GameWindow.cpp
     Roles.cpp
     Game.cpp
     Player.cpp

@@ -1,8 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 #include "Player.hpp"
+#include <QString>
 using namespace coup;
-#include <string>
 #include <vector>
 using namespace std;
 
@@ -15,23 +15,24 @@ namespace coup {
 	};
 	class Action {
 		public:
+			Action() : sender(nullptr), reciever(nullptr), coin_change(0) {}
 			Action(Player* sender, Player* reciever, int coin_change) : sender(sender), reciever(reciever), coin_change(coin_change) {}
-			Action(Action* other) : sender(other->sender), reciever(other->reciever), coin_change(other->coin_change) {}
+			Action(const Action& other) : sender(other.sender), reciever(other.reciever), coin_change(other.coin_change) {}
 			Player* sender; 
 			Player* reciever; 
 			int coin_change;
 	};
 	class Game {
 		private:
-			Player* TURN = NULL;
-			vector<Player> PLAYERS;
-			Player* WINNER = NULL;
+			Player* TURN;
+			vector<Player*> PLAYERS;
+			Player* WINNER;
 			Action LAST_TAX;
 			Action LAST_ARREST;
 			Action LAST_BRIBE;
 			Action LAST_COUP;
 		public:
-			Game(vector<Player> players) : PLAYERS(std::move(players)), LAST_TAX(NULL), LAST_ARREST(NULL), LAST_BRIBE(NULL), LAST_COUP(NULL) {};
+			Game(vector<Player*> players) : PLAYERS(players), TURN(players[0]) {};
 			/*
 			 * Get last performed action according to type.
 			 */
@@ -43,15 +44,15 @@ namespace coup {
 			/*
 			 * Gets the Player whose turn it is.
 			*/
-			Player turn();
+			Player* turn();
 			/*
 			 * Get all players currently playing or lost.
 			*/
-			vector<Player> players();
+			vector<Player*> players();
 			/*
 			 * Get the name of the winning Player.
 			*/
-			string winner();
+			QString winner();
 	};
 }
 #endif
