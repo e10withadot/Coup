@@ -1,5 +1,8 @@
+#ifndef GAME_H
+#define GAME_H
 #include "Player.hpp"
 using namespace coup;
+#include <string>
 #include <vector>
 using namespace std;
 
@@ -21,7 +24,7 @@ namespace coup {
 	class Game {
 		private:
 			Player TURN = NULL;
-			std::vector<Player> PLAYERS;
+			vector<Player> PLAYERS;
 			Player WINNER = NULL;
 			Action LAST_TAX;
 			Action LAST_ARREST;
@@ -44,10 +47,11 @@ namespace coup {
 			/*
 			 * Get all players currently playing or lost.
 			*/
-			std::vector<Player> players();
+			vector<Player> players();
 			/*
 			 * Get the name of the winning Player.
 			*/
 			string winner();
 	};
 }
+#endif

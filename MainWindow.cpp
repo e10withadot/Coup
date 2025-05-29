@@ -1,4 +1,6 @@
+#include <QCloseEvent>
 #include "MainWindow.hpp"
+#include "GameWindow.hpp"
 using namespace gui;
 #include <vector>
 #include <stdexcept>
@@ -97,5 +99,6 @@ void MainWindow::startGame() {
 		}
 	}
 	close();
+	GameWindow* game_win;
+	game_win->show();
 }
-

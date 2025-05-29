@@ -1,11 +1,10 @@
-#include <string>
-using namespace std;
+#ifndef PLAYER_H
+#define PLAYER_H
 namespace coup {
 	class Game;
 	class Action;
 	class Player {
 		protected:
-			string NAME;
 			Game* CUR_GAME;
 			bool CPU;
 		public:
@@ -56,10 +55,6 @@ namespace coup {
 			 * Player's response to coup.
 			 */
 			virtual void coup_resp();
-			/* 
-			 * Get the player's name.
-			 */
-			string name();
 			/*
 			 * Get the player's current amount of coins.
 			*/
@@ -74,3 +69,4 @@ namespace coup {
 			Game* game();
 	};
 }
+#endif

@@ -3,7 +3,7 @@ using namespace gui;
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    MainWindow window;
-    window.show();
+    MainWindow main_win;
+    main_win.show();
     return app.exec();
 }
