@@ -31,7 +31,7 @@ namespace coup {
 			/*
 			 * Get one coin from the pool.
 			*/
-			void gather();
+			Action gather();
 			/*
 			 * Get two coins from the pool.
 			*/
@@ -52,7 +52,7 @@ namespace coup {
 			/* 
 			 * Blocks a player from performing economic actions. Costs 3 coins.
 			*/
-			virtual void sanction(Player* target);
+			virtual Action sanction(Player* target);
 			/*
 			 * Player's response to sanction.
 			 */

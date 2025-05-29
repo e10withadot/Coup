@@ -8,16 +8,25 @@ using namespace std;
 
 namespace coup {
 	enum ActionType {
+		SEECOINS,
+		GATHER,
 		TAX,
+		UNDOTAX,
 		ARREST,
+		BLOCKARREST,
 		BRIBE,
-		COUP
+		UNDOBRIBE,
+		SANCTION,
+		COUP,
+		UNDOCOUP,
+		INVEST
 	};
 	class Action {
 		public:
 			Action() : sender(nullptr), reciever(nullptr), coin_change(0) {}
-			Action(Player* sender, Player* reciever, int coin_change) : sender(sender), reciever(reciever), coin_change(coin_change) {}
-			Action(const Action& other) : sender(other.sender), reciever(other.reciever), coin_change(other.coin_change) {}
+			Action(ActionType type, Player* sender, Player* reciever, int coin_change) : type(type), sender(sender), reciever(reciever), coin_change(coin_change) {}
+			Action(const Action& other) : type(other.type), sender(other.sender), reciever(other.reciever), coin_change(other.coin_change) {}
+			ActionType type;
 			Player* sender; 
 			Player* reciever; 
 			int coin_change;

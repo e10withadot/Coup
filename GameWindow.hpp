@@ -4,7 +4,6 @@
 #include <QStyle>
 #include <QPushButton>
 #include <QBoxLayout>
-#include <qpushbutton.h>
 #include "Game.hpp"
 #include "Roles.hpp"
 using namespace coup;
@@ -24,8 +23,10 @@ namespace gui {
  			GameWindow(vector<Player*> players);
 			void refreshButtons();
 			void refreshLabels(vector<Player*> affected);
+			void gameLoop();
 		private:
 			Game* CUR_GAME;
+			bool button_event;
 		private slots:
 			void seeCoinsPress();
 			void gatherPress();
