@@ -1,4 +1,6 @@
+#include <QDialog>
 #include <QCloseEvent>
+#include <QRandomGenerator>
 #include "MainWindow.hpp"
 #include "GameWindow.hpp"
 using namespace gui;
@@ -7,98 +9,87 @@ using namespace gui;
 using namespace std;
 
 MainWindow::MainWindow() {
-	pnum = 0;
-	layout = new QVBoxLayout;
-	setWindowTitle("Coup");
-	QLabel* label = new QLabel("# Welcome to Coup!\nPick players and choose roles!\n###### To see what roles do, hover on them.");
-	label->setAlignment(Qt::AlignHCenter);
-	label->setTextFormat(Qt::MarkdownText);
-	QPushButton* add_button = new QPushButton("+");
-	sub_button = new QPushButton("-");
-	QPushButton* play = new QPushButton("Play");
-	QObject::connect(add_button, &QPushButton::clicked, this, &MainWindow::addPlayer);
-	QObject::connect(sub_button, &QPushButton::clicked, this, &MainWindow::subPlayer);
-	QObject::connect(play, &QPushButton::clicked, this, &MainWindow::startGame);
-	layout->addWidget(label);
-	layout->addWidget(add_button);
-	layout->addWidget(sub_button);
-	layout->addWidget(play);
-	setLayout(layout);
-	addPlayer();
-	addPlayer();
-	sub_button->setEnabled(false);
+    setWindowTitle("Coup");
+    layout = new QVBoxLayout;
+
+    QLabel* label = new QLabel("# Welcome to Coup!\nSelect number of players:");
+    label->setAlignment(Qt::AlignHCenter);
+    label->setTextFormat(Qt::MarkdownText);
+
+    pnumSpin = new QSpinBox;
+    pnumSpin->setRange(2, 6);
+    pnumSpin->setValue(2);
+
+    startButton = new QPushButton("Start Game");
+    connect(startButton, &QPushButton::clicked, this, &MainWindow::startSetup);
+
+    layout->addWidget(label);
+    layout->addWidget(pnumSpin);
+    layout->addWidget(startButton);
+
+    setLayout(layout);
 }
 
-void MainWindow::addPlayer() {
-	QLabel* plabel = new QLabel(QString("Player %1").arg(++pnum));
-	if (!sub_button->isEnabled())
-		sub_button->setEnabled(true);
-	player_sel = new QComboBox;
-	role_sel = new QComboBox;
-	player_sel->addItem("Human");
-	player_sel->addItem("CPU");
-	role_sel->addItem("Spy");
-	role_sel->setItemData(0, "Can see the number of coins another player has, and blocks arrest.", Qt::ToolTipRole);
-	role_sel->addItem("Governor");
-	role_sel->setItemData(1, "+1 coin during tax. Can also cancel tax.", Qt::ToolTipRole);
-	role_sel->addItem("Judge");
-	role_sel->setItemData(2, "Can cancel bribes, and a sanction against them costs 1 coin.", Qt::ToolTipRole);
-	role_sel->addItem("Merchant");
-	role_sel->setItemData(3, "When coins > 3, +1 coin each turn. Arrest makes them pay the bank, not the attacker.", Qt::ToolTipRole);
-	role_sel->addItem("General");
-	role_sel->setItemData(4, "Can undo a coup. Also nullifies arrest.", Qt::ToolTipRole);
-	role_sel->addItem("Baron");
-	role_sel->setItemData(5, "Can invest. Recieves +1 coin if attacked with sanction.", Qt::ToolTipRole);
-	QWidget *player_wid = new QWidget();
-	QHBoxLayout* h_layout = new QHBoxLayout();
-	h_layout->addWidget(plabel);
-	h_layout->addWidget(player_sel);
-	h_layout->addWidget(role_sel);
-	player_wid->setLayout(h_layout);
-	layout->insertWidget(layout->count() -1, player_wid);
-	playerWidgets.append(player_wid);
-}
+void MainWindow::startSetup() {
+    int pnum = pnumSpin->value();
+    vector<Player*> players;
+    QStringList roleNames = {"Spy", "Governor", "Judge", "Merchant", "General", "Baron"};
+    QStringList roleDescs = {
+        "Can see the number of coins another player has, and blocks arrest.",
+        "+1 coin during tax. Can also cancel tax.",
+        "Can cancel bribes, and a sanction against them costs 1 coin.",
+        "When coins > 3, +1 coin each turn. Arrest makes them pay the bank, not the attacker.",
+        "Can undo a coup. Also nullifies arrest.",
+        "Can invest. Receives +1 coin if attacked with sanction."
+    };
 
-void MainWindow::subPlayer() {
-	QWidget* lastpl = playerWidgets.takeLast();
-	layout->removeWidget(lastpl);
-	delete lastpl;
-	this->pnum--;
-	if (pnum == 2)
-		sub_button->setEnabled(false);
-}
-
-void MainWindow::startGame() {
-	vector<Player*> players;
-	for (int i = 0; i < pnum; i++) {
-		QComboBox* pl_sel = qobject_cast<QComboBox *>(playerWidgets[i]->layout()->itemAt(1)->widget());
-		QComboBox* rl_sel = qobject_cast<QComboBox *>(playerWidgets[i]->layout()->itemAt(2)->widget());
-		int role_n = rl_sel->currentIndex();
-		bool is_cpu = pl_sel->currentIndex();
-		switch (role_n) {
-			case 0:
-				players.push_back(new Spy(i, is_cpu));
+    QVector<int> roleIndices;
+    for (int i = 0; i < 6; ++i) roleIndices.push_back(i);
+	int h_ind;
+    for (int i = 0; i < pnum; ++i) {
+		int choice = QRandomGenerator::global()->bounded(0, 6);
+		bool is_cpu = (i != 0);
+		if(!is_cpu)
+			h_ind = choice;
+        Player* p = nullptr;
+        switch (choice) {
+            case 0:
+				p = new Spy(i, is_cpu);
 				break;
-			case 1:
-				players.push_back(new Governor(i, is_cpu));
+            case 1:
+				p = new Governor(i, is_cpu);
 				break;
-			case 2:
-				players.push_back(new Judge(i, is_cpu));
+            case 2:
+				p = new Judge(i, is_cpu);
 				break;
-			case 3:
-				players.push_back(new Merchant(i, is_cpu));
+            case 3:
+				p = new Merchant(i, is_cpu);
 				break;
-			case 4:
-				players.push_back(new General(i, is_cpu));
+            case 4:
+				p = new General(i, is_cpu);
 				break;
-			case 5:
-				players.push_back(new Baron(i, is_cpu));
+            case 5:
+				p = new Baron(i, is_cpu);
 				break;
-			default:
+            default:
 				throw std::invalid_argument("Invalid role.");
-		}
-	}
-	close();
-	GameWindow* game_win = new GameWindow(players);
-	game_win->show();
+        }
+        players.push_back(p);
+    }
+
+    QDialog* roleDialog = new QDialog;
+    QVBoxLayout* dlayout = new QVBoxLayout(roleDialog);
+    QLabel* roleLabel = new QLabel(QString("Your role: <b>%1</b>").arg(roleNames[h_ind]));
+    QLabel* descLabel = new QLabel(QString("Description: %1").arg(roleDescs[h_ind]));
+    QPushButton* okButton = new QPushButton("OK");
+    connect(okButton, &QPushButton::clicked, roleDialog, &QDialog::accept);
+
+    dlayout->addWidget(roleLabel);
+    dlayout->addWidget(descLabel);
+    dlayout->addWidget(okButton);
+    roleDialog->exec();
+
+    close();
+    GameWindow* game_win = new GameWindow(players);
+    game_win->show();
 }

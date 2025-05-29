@@ -16,13 +16,13 @@ namespace gui {
 			vector<Player*> players;
 			QVBoxLayout* main_layout;
 			QLabel* sys_l;
-			vector<QLabel*> player_l;
+			QLabel* p_label;
 			vector<QPushButton*> button_sts;
 			QVBoxLayout* actions;
 
  			GameWindow(vector<Player*> players);
 			void refreshButtons();
-			void refreshLabels(vector<Player*> affected);
+			void refreshLabels();
 			void gameLoop();
 		private:
 			Game* CUR_GAME;

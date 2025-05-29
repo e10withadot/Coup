@@ -12,12 +12,9 @@ GameWindow::GameWindow (vector<Player*> players) : QWidget(), players(players), 
     main_layout = new QVBoxLayout;
     sys_l = new QLabel("Game Start!");
     QVBoxLayout* sts = new QVBoxLayout;
-    for (int i = 0; i < players.size(); i++) {
-        QLabel* label = new QLabel(QString("**Player %1:** %2 coins").arg(i+1).arg(players[i]->coins()));
-        label->setTextFormat(Qt::MarkdownText);
-        player_l.push_back(label);
-        sts->addWidget(label);
-    }
+    p_label = new QLabel(QString("**Your coins:** %1").arg(players[0]->coins()));
+    p_label->setTextFormat(Qt::MarkdownText);
+    sts->addWidget(p_label);
     QVBoxLayout* actions = new QVBoxLayout;
     void (GameWindow::*funcs[12]) () = { 
 		&GameWindow::gatherPress,
@@ -59,6 +56,7 @@ GameWindow::GameWindow (vector<Player*> players) : QWidget(), players(players), 
     main_layout->addLayout(actions);
     setLayout(main_layout);
     show();
+    refreshButtons();
 }
 
 void GameWindow::refreshButtons() {
@@ -66,7 +64,7 @@ void GameWindow::refreshButtons() {
     if (turn->cpu())
         for (int i = 0; i < 6; i++)
              button_sts[i]->setEnabled(false);
-    for (int i = 7; i < 12; i++)
+    for (int i = 6; i < 12; i++)
          button_sts[i]->setEnabled(false);
     switch (turn->role()) {
         case SPY:
@@ -86,15 +84,12 @@ void GameWindow::refreshButtons() {
             button_sts[11]->setEnabled(true);
             break;
         default:
-            throw invalid_argument("Invalid role.");
+            break;
     }
 }
 
-void GameWindow::refreshLabels(vector<Player*> affected) {
-    for (Player* p : affected) {
-        int i = p->index();
-        player_l[i]->setText(QString("**Player %1:** %2 coins").arg(i+1).arg(p->coins()));
-    }
+void GameWindow::refreshLabels() {
+    p_label->setText(QString("**Your coins:** %1").arg(players[0]->coins()));
 }
 
 void GameWindow::seeCoinsPress() {}
@@ -146,44 +141,19 @@ void GameWindow::gameLoop() {
         int choice = rand() % allowed.size();
         int index = allowed[choice];
         switch (index) {
-            case 0:
-                gatherPress();
-                break;
-            case 1:
-                taxPress();
-                break;
-            case 2:
-                arrestPress();
-                break;
-            case 3:
-                bribePress();
-                break;
-            case 4:
-                sanctionPress();
-                break;
-            case 5:
-                coupPress();
-                break;
-            case 6:
-                seeCoinsPress();
-                break;
-            case 7:
-                blockArrestPress();
-                break;
-            case 8:
-                undoTaxPress();
-                break;
-            case 9:
-                undoBribePress();
-                break;
-            case 10:
-                undoCoupPress();
-                break;
-            case 11:
-                investPress();
-                break;
-            default:
-                break;
+            case 0: gatherPress(); break;
+            case 1: taxPress(); break;
+            case 2: arrestPress(); break;
+            case 3: bribePress(); break;
+            case 4: sanctionPress(); break;
+            case 5: coupPress(); break;
+            case 6: seeCoinsPress(); break;
+            case 7: blockArrestPress(); break;
+            case 8: undoTaxPress(); break;
+            case 9: undoBribePress(); break;
+            case 10: undoCoupPress(); break;
+            case 11: investPress(); break;
+            default: break;
         }
     }
     while(!button_event) {
