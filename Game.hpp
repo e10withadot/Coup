@@ -12,25 +12,23 @@ namespace coup {
 	};
 	class Action {
 		public:
-			Action(Player* sender, Player* reciever, int coin_change) {
-				this->sender = sender;
-				this->reciever = reciever;
-				this->coin_change = coin_change;
-			}
+			Action(Player* sender, Player* reciever, int coin_change) : sender(sender), reciever(reciever), coin_change(coin_change) {}
+			Action(Action* other) : sender(other->sender), reciever(other->reciever), coin_change(other->coin_change) {}
 			Player* sender; 
 			Player* reciever; 
 			int coin_change;
 	};
 	class Game {
 		private:
-			Player TURN;
-			vector<Player> PLAYERS;
-			Player WINNER;
+			Player TURN = NULL;
+			std::vector<Player> PLAYERS;
+			Player WINNER = NULL;
 			Action LAST_TAX;
 			Action LAST_ARREST;
 			Action LAST_BRIBE;
 			Action LAST_COUP;
 		public:
+			Game(vector<Player> players) : PLAYERS(std::move(players)), LAST_TAX(NULL), LAST_ARREST(NULL), LAST_BRIBE(NULL), LAST_COUP(NULL) {};
 			/*
 			 * Get last performed action according to type.
 			 */
@@ -46,7 +44,7 @@ namespace coup {
 			/*
 			 * Get all players currently playing or lost.
 			*/
-			vector<Player> players();
+			std::vector<Player> players();
 			/*
 			 * Get the name of the winning Player.
 			*/
