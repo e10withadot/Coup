@@ -53,8 +53,16 @@ void Player::coup_resp() {
     this->LOST= true;
 }
 
-string Player::name() {
-    return this->NAME;
+int Player::index() {
+    return this->INDEX;
+}
+
+PlayerRole Player::role() {
+    return this->ROLE;
+}
+
+bool Player::cpu() {
+    return this->CPU;
 }
 
 int Player::coins() {

@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QBoxLayout>
 #include "Game.hpp"
+#include "Roles.hpp"
 using namespace coup;
 #include <vector>
 using namespace std;
@@ -12,10 +13,15 @@ using namespace std;
 namespace gui {
 	class GameWindow : public QWidget {
 		public:
-			vector<QLabel*> pl_labels;
 			QVBoxLayout* main_layout;
+			QLabel* sys_l;
+			QVBoxLayout* player_sts;
+			QVBoxLayout* actions;
+
  			GameWindow(vector<Player> players);
+			void refreshButtons();
 		private slots:
+			Game* CUR_GAME;
 			void gatherPress();
 			void taxPress();
 			void arrestPress();

@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "Player.hpp"
 using namespace coup;
 
 namespace coup {
@@ -7,17 +8,17 @@ namespace coup {
 	* This action costs no coins and does not count as a turn.
 	*/
 	class Spy : public Player {
-		public:
-			using Player::Player;
-			int see_coins(Player* target);
-			void block_arrest(Player* target);
+	public:
+		Spy(int index, bool cpu) : Player(index, cpu)  { this->ROLE = SPY; }
+		int see_coins(Player* target);
+		void block_arrest(Player* target);
 	};
 	/* 
 	 * Takes an additional coin when doing a tax action. Can cancel others' tax actions.
 	 */
 	class Governor : public Player {
 	public:
-		using Player::Player;
+		Governor(int index, bool cpu) : Player(index, cpu)  { this->ROLE = GOVERNOR; }
 		Action tax() override;
 		void undo_tax();
 	};
@@ -26,7 +27,7 @@ namespace coup {
 	 */
 	class Judge : public Player {
 	public:
-		using Player::Player;
+		Judge(int index, bool cpu) : Player(index, cpu)  { this->ROLE = JUDGE; }
 		void undo_bribe();
 		void sanction_resp(Player* sender) override;
 	};
@@ -36,7 +37,7 @@ namespace coup {
 	*/
 	class Merchant : public Player {
 	public:
-		using Player::Player;
+		Merchant(int index, bool cpu) : Player(index, cpu)  { this->ROLE = MERCHANT; }
 		void start_turn() override;
 		int arrest_resp() override;
 	};
@@ -46,7 +47,7 @@ namespace coup {
 	 */
 	class Baron : public Player {
 	public:
-		using Player::Player;
+		Baron(int index, bool cpu) : Player(index, cpu)  { this->ROLE = BARON; }
 		void invest();
 		void sanction_resp(Player* sender) override;
 	};
@@ -56,7 +57,7 @@ namespace coup {
 	*/
 	class General : public Player {
 	public:
-		using Player::Player;
+		General(int index, bool cpu) : Player(index, cpu)  { this->ROLE = GENERAL; }
 		void undo_coup();
 		int arrest_resp() override;
 	};

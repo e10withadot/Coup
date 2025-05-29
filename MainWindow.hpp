@@ -17,7 +17,6 @@ namespace gui {
 			QVBoxLayout* layout;
 			QVector<QWidget*> playerWidgets;
 			QPushButton* sub_button;
-//			MainWindow(vector<Player> players);
 			MainWindow();
 		private slots:
 			int pnum;

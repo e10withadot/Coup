@@ -3,11 +3,20 @@
 namespace coup {
 	class Game;
 	class Action;
+	enum PlayerRole {
+		GOVERNOR,
+		SPY,
+		BARON,
+		GENERAL,
+		JUDGE,
+		MERCHANT
+	};
 	class Player {
 		protected:
 			Game* CUR_GAME;
 			bool CPU;
 			int INDEX;
+			PlayerRole ROLE;
 		public:
 			int COINS = 0;
 			bool ECONOMY = true;
@@ -60,6 +69,14 @@ namespace coup {
 			 * Get the player's index.
 			 */
 			int index();
+			/*
+			 * Get the player's role.
+			 */
+			PlayerRole role();
+			/*
+			 * Get if player is a cpu.
+			 */
+			PlayerRole cpu();
 			/*
 			 * Get the player's current amount of coins.
 			*/
