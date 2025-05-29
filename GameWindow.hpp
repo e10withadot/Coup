@@ -27,12 +27,17 @@ namespace gui {
 		private:
 			Game* CUR_GAME;
 		private slots:
+			void seeCoinsPress();
 			void gatherPress();
 			void taxPress();
+			void undoTaxPress();
 			void arrestPress();
-			void investPress();
+			void blockArrestPress();
 			void bribePress();
+			void undoBribePress();
 			void sanctionPress();
 			void coupPress();
+			void undoCoupPress();
+			void investPress();
 	};
 }
