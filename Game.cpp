@@ -1,12 +1,10 @@
 #include "Game.hpp"
-#include <qglobal.h>
 using namespace coup;
-#include <charconv>
 #include <stdexcept>
 #include <vector>
 using namespace std;
 
-Action Game::get_last(ActionType type){
+Action Game::getLast(ActionType type){
     switch (type) {
         case TAX:
             return this->LAST_TAX;
@@ -21,7 +19,7 @@ Action Game::get_last(ActionType type){
     };
 }
 
-void Game::set_last(ActionType type, Action val){
+void Game::setLast(ActionType type, Action val){
     switch (type) {
         case TAX:
             this->LAST_TAX= val;
@@ -36,6 +34,18 @@ void Game::set_last(ActionType type, Action val){
     };
 }
 
+void Game::moveTurn() {
+    int index;
+    if (TURN->index()+1 == PLAYERS.size())
+        index = 0;
+    else index = TURN->index()+1;
+    while(PLAYERS[index]->LOST) {
+        PLAYERS.erase(PLAYERS.begin() + index);
+        index++;
+    }
+    if (PLAYERS.size() == 1) WINNER = PLAYERS[0];
+    else TURN = PLAYERS[index];
+}
 Player* Game::turn() {
     return this->TURN;
 }
