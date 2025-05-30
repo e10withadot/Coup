@@ -3,7 +3,10 @@
 #include <QLabel>
 #include <QStyle>
 #include <QPushButton>
+#include <QComboBox>
 #include <QBoxLayout>
+#include <QMessageBox>
+#include <QDialog>
 #include "Game.hpp"
 #include "Roles.hpp"
 using namespace coup;
