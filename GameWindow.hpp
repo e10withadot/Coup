@@ -8,8 +8,8 @@
 #include <QMessageBox>
 #include <QDialog>
 #include <QRandomGenerator>
+#include <QTimer>
 #include "Game.hpp"
-#include "Roles.hpp"
 using namespace coup;
 #include <vector>
 using namespace std;
@@ -27,6 +27,7 @@ namespace gui {
 
  			GameWindow(vector<Player*> players);
 			void refreshButtons();
+			void disableButtons();
 			void refreshLabels();
 			void gameLoop();
 			void nextTurn();

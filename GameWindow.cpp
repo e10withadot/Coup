@@ -1,3 +1,4 @@
+#include "Roles.hpp"
 #include <ctime>
 #include <system_error>
 using namespace std;
@@ -56,7 +57,6 @@ GameWindow::GameWindow (vector<Player*> players) : QWidget(), players(players), 
     main_layout->addLayout(actions);
     setLayout(main_layout);
     show();
-    refreshButtons();
     gameLoop();
 }
 
@@ -92,7 +92,7 @@ void GameWindow::refreshButtons() {
                 if (CUR_GAME->getLast(BRIBE) != nullptr)button_sts[9]->setEnabled(true);
                 break;
             case GENERAL:
-                if (CUR_GAME->getLast(COUP) != nullptr || turn->coins() >= 5) button_sts[10]->setEnabled(true);
+                if (CUR_GAME->getLast(COUP) != nullptr && turn->coins() >= 5) button_sts[10]->setEnabled(true);
                 break;
             case BARON: 
                 if (turn->coins() >= 3) button_sts[11]->setEnabled(true);
@@ -101,6 +101,10 @@ void GameWindow::refreshButtons() {
                 break;
         }
     }
+}
+void GameWindow::disableButtons() {
+    for (int i = 0; i < 12; i++)
+         button_sts[i]->setEnabled(false);
 }
 
 void GameWindow::refreshLabels() {
@@ -242,15 +246,19 @@ void GameWindow::nextTurn() {
     }
 }
 void GameWindow::onMove() {
-    moves_left--;
-    if (moves_left > 0) {
-        refreshButtons();
-    } else {
-        Player* turn = CUR_GAME->turn();
-        turn->ECONOMY = true;
-        turn->ARREST = true;
-        nextTurn();
-    }
+    disableButtons();
+    refreshLabels();
+    Player* turn = CUR_GAME->turn();
+    QTimer::singleShot(2000, this, [this, turn]() {
+        moves_left--;
+        if (moves_left > 0)
+            gameLoop();
+        else {
+            turn->ECONOMY = true;
+            turn->ARREST = true;
+            nextTurn();
+        }
+    });
 }
 
 std::vector<int> GameWindow::allowedButtons(Player* p) {
@@ -293,36 +301,40 @@ std::vector<int> GameWindow::allowedButtons(Player* p) {
 
 void GameWindow::gameLoop() {
     Player* turn = CUR_GAME->turn();
+    if (turn->cpu()) disableButtons();
+    else refreshButtons();
     sys_l->setText(QString("Player %1's turn!").arg(turn->index()+1));
-    refreshButtons();
     if (turn->ADDITIONAL) {
         moves_left = 2;
         turn->ADDITIONAL = false;
-    } else {
+    }
+    else {
         moves_left = 1;
     }
     turn->start_turn();
 
     if (turn->cpu()) {
-        std::vector<int> allowed = allowedButtons(turn);
-        if (!allowed.empty()) {
-            int choice = QRandomGenerator::global()->bounded(static_cast<int>(allowed.size()));
-            int index = allowed[choice];
-            switch (index) {
-                case 0: gatherPress(); break;
-                case 1: taxPress(); break;
-                case 2: arrestPress(); break;
-                case 3: bribePress(); break;
-                case 4: sanctionPress(); break;
-                case 5: coupPress(); break;
-                case 6: blockArrestPress(); break;
-                case 7: undoTaxPress(); break;
-                case 8: undoBribePress(); break;
-                case 9: undoCoupPress(); break;
-                case 10: investPress(); break;
-                default: break;
+        QTimer::singleShot(2000, this, [this, turn]() {
+            std::vector<int> allowed = allowedButtons(turn);
+            if (!allowed.empty()) {
+                int choice = QRandomGenerator::global()->bounded(static_cast<int>(allowed.size()));
+                int index = allowed[choice];
+                switch (index) {
+                    case 0: gatherPress(); break;
+                    case 1: taxPress(); break;
+                    case 2: arrestPress(); break;
+                    case 3: bribePress(); break;
+                    case 4: sanctionPress(); break;
+                    case 5: coupPress(); break;
+                    case 6: blockArrestPress(); break;
+                    case 7: undoTaxPress(); break;
+                    case 8: undoBribePress(); break;
+                    case 9: undoCoupPress(); break;
+                    case 10: investPress(); break;
+                    default: break;
+                }
             }
-        }
-        onMove();
+            onMove();
+        });
     }
 }

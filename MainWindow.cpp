@@ -51,7 +51,7 @@ void MainWindow::startSetup() {
 		bool is_cpu = (i != 0);
 		if(!is_cpu)
 			h_ind = choice;
-        Player* p = nullptr;
+        Player* p;
         switch (choice) {
             case 0:
 		    p = new Spy(i, is_cpu);

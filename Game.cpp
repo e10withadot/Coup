@@ -1,5 +1,6 @@
 #include "Game.hpp"
 using namespace coup;
+#include <stdexcept>
 #include <vector>
 using namespace std;
 
@@ -14,7 +15,7 @@ Action* Game::getLast(ActionType type){
         case COUP:
             return this->LAST_COUP;
         default:
-            return new Action();
+            throw invalid_argument("Invalid type.");
     };
 }
 

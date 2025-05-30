@@ -14,7 +14,7 @@ namespace coup {
 	class Player {
 		protected:
 			Game* CUR_GAME;
-			bool CPU;
+			bool CPU = false;
 			int INDEX;
 			PlayerRole ROLE;
 		public:

@@ -35,13 +35,13 @@ namespace coup {
 		private:
 			Player* TURN;
 			vector<Player*> PLAYERS;
-			Action* LAST_TAX;
-			Action* LAST_ARREST;
-			Action* LAST_BRIBE;
-			Action* LAST_COUP;
+			Action* LAST_TAX = nullptr;
+			Action* LAST_ARREST = nullptr;
+			Action* LAST_BRIBE = nullptr;
+			Action* LAST_COUP = nullptr;
 			Player* WINNER;
 		public:
-			Game(vector<Player*> players) : PLAYERS(players), TURN(players[0]) {};
+			Game(vector<Player*> players) : PLAYERS(players), TURN(players[0]), WINNER(nullptr) {};
 			/*
 			 * Get last performed action according to type.
 			 */
