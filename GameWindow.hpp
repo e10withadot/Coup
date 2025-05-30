@@ -7,6 +7,7 @@
 #include <QBoxLayout>
 #include <QMessageBox>
 #include <QDialog>
+#include <QRandomGenerator>
 #include "Game.hpp"
 #include "Roles.hpp"
 using namespace coup;
@@ -22,15 +23,21 @@ namespace gui {
 			QLabel* p_label;
 			vector<QPushButton*> button_sts;
 			QVBoxLayout* actions;
+			int moves_left = 1;
 
  			GameWindow(vector<Player*> players);
 			void refreshButtons();
 			void refreshLabels();
+			int playerSelect();
 			void gameLoop();
+			void nextTurn();
 		private:
 			Game* CUR_GAME;
 			bool button_event;
+		signals:
+			void moveComplete();
 		private slots:
+			void onMove();
 			void seeCoinsPress();
 			void gatherPress();
 			void taxPress();

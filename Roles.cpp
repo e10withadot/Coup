@@ -1,4 +1,5 @@
 #include "Roles.hpp"
+#include "Game.hpp"
 using namespace coup;
 
 Action Spy::see_coins(Player* target) {
@@ -59,7 +60,7 @@ Action Judge::undo_bribe() {
     Action last_bribe = this->game()->getLast(BRIBE);
     Player *target = last_bribe.reciever;
     target->ADDITIONAL = false;
-    return Action(TAX, this, target, 0);
+    return Action(UNDOBRIBE, this, target, 0);
 }
 
 void Judge::sanction_resp(Player* sender) {

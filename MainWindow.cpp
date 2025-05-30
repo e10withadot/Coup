@@ -54,25 +54,25 @@ void MainWindow::startSetup() {
         Player* p = nullptr;
         switch (choice) {
             case 0:
-				p = new Spy(i, is_cpu);
-				break;
+		    p = new Spy(i, is_cpu);
+		    break;
             case 1:
-				p = new Governor(i, is_cpu);
-				break;
+		    p = new Governor(i, is_cpu);
+		    break;
             case 2:
-				p = new Judge(i, is_cpu);
-				break;
+		    p = new Judge(i, is_cpu);
+		    break;
             case 3:
-				p = new Merchant(i, is_cpu);
-				break;
+		    p = new Merchant(i, is_cpu);
+		    break;
             case 4:
-				p = new General(i, is_cpu);
-				break;
+		    p = new General(i, is_cpu);
+		    break;
             case 5:
-				p = new Baron(i, is_cpu);
-				break;
+		    p = new Baron(i, is_cpu);
+		    break;
             default:
-				throw std::invalid_argument("Invalid role.");
+		    throw std::invalid_argument("Invalid role.");
         }
         players.push_back(p);
     }

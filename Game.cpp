@@ -34,20 +34,21 @@ void Game::setLast(ActionType type, Action val){
     };
 }
 
+Player* Game::turn() {
+    return this->TURN;
+}
+
 void Game::moveTurn() {
     int index;
     if (TURN->index()+1 == PLAYERS.size())
         index = 0;
     else index = TURN->index()+1;
-    while(PLAYERS[index]->LOST) {
+    if(PLAYERS[index]->LOST) {
         PLAYERS.erase(PLAYERS.begin() + index);
-        index++;
+        if (PLAYERS.size() == 1) WINNER = PLAYERS[0];
+        else moveTurn();
     }
-    if (PLAYERS.size() == 1) WINNER = PLAYERS[0];
     else TURN = PLAYERS[index];
-}
-Player* Game::turn() {
-    return this->TURN;
 }
 
 vector<Player*> Game::players() {
@@ -55,5 +56,6 @@ vector<Player*> Game::players() {
 }
 
 QString Game::winner() {
-    return (QString("Player %1")).arg(WINNER->index());
+    if (WINNER != nullptr) return (QString("Player %1")).arg(WINNER->index());
+    else return QString("");
 }
