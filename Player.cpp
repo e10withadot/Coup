@@ -35,8 +35,9 @@ int Player::arrest_resp() {
 }
 
 Action* Player::bribe() {
+    this->COINS-=4;
     this->ADDITIONAL = true;
-    return new Action(BRIBE, this, NULL, -1);
+    return new Action(BRIBE, this, NULL, 0);
 }
 
 Action* Player::sanction(Player* target) {

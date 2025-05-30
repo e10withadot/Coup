@@ -1,5 +1,4 @@
 #include <ctime>
-#include <iostream>
 #include <system_error>
 using namespace std;
 #include "GameWindow.hpp"
@@ -63,46 +62,48 @@ GameWindow::GameWindow (vector<Player*> players) : QWidget(), players(players), 
 
 void GameWindow::refreshButtons() {
     Player* turn = CUR_GAME->turn();
+    if (turn->coins() >= 10) {
+        for (int i = 0; i < 12; i++) {
+            if (i != 5) button_sts[i]->setEnabled(false);
+            else button_sts[i]->setEnabled(true);
+        }
+        return;
+    }
+    for (int i = 0; i < 6; i++)
+        button_sts[i]->setEnabled(true);
     for (int i = 6; i < 12; i++)
-         button_sts[i]->setEnabled(false);
-    if (turn->cpu()) 
-        for (int i = 0; i < 6; i++)
-            button_sts[i]->setEnabled(false);
-    else {
-        for (int i = 0; i < 6; i++)
-            button_sts[i]->setEnabled(true);
-        if (!turn->ECONOMY) {
-            button_sts[0]->setEnabled(false);
-            button_sts[1]->setEnabled(false);
-        }
-        if (!turn->ARREST)
-            button_sts[2]->setEnabled(false);
-        if (turn->coins() < 7)
-            button_sts[5]->setEnabled(false);
-        if (turn->coins() < 4 || turn->ADDITIONAL)
-            button_sts[3]->setEnabled(false);
-        if (turn->coins() < 3)
-            button_sts[4]->setEnabled(false);
-        switch (turn->role()) {
-            case SPY:
-                button_sts[6]->setEnabled(true);
-                button_sts[7]->setEnabled(true);
-                break;
-            case GOVERNOR:
-                if (CUR_GAME->getLast(TAX) != nullptr) button_sts[8]->setEnabled(true);
-                break;
-            case JUDGE:
-                if (CUR_GAME->getLast(BRIBE) != nullptr) button_sts[9]->setEnabled(true);
-                break;
-            case GENERAL:
-                if (CUR_GAME->getLast(COUP) != nullptr && turn->coins() >= 5) button_sts[10]->setEnabled(true);
-                break;
-            case BARON: 
-                if (turn->coins() >= 3) button_sts[11]->setEnabled(true);
-                break;
-            default:
-                break;
-        }
+        button_sts[i]->setEnabled(false);
+    if (!turn->ECONOMY) {
+        button_sts[0]->setEnabled(false);
+        button_sts[1]->setEnabled(false);
+    }
+    if (!turn->ARREST)
+        button_sts[2]->setEnabled(false);
+    if (turn->coins() < 7)
+        button_sts[5]->setEnabled(false);
+    if (turn->coins() < 4 || turn->ADDITIONAL)
+        button_sts[3]->setEnabled(false);
+    if (turn->coins() < 3)
+        button_sts[4]->setEnabled(false);
+    switch (turn->role()) {
+        case SPY:
+            button_sts[6]->setEnabled(true);
+            button_sts[7]->setEnabled(true);
+            break;
+        case GOVERNOR:
+            if (CUR_GAME->getLast(TAX) != nullptr) button_sts[8]->setEnabled(true);
+            break;
+        case JUDGE:
+            if (CUR_GAME->getLast(BRIBE) != nullptr) button_sts[9]->setEnabled(true);
+            break;
+        case GENERAL:
+            if (CUR_GAME->getLast(COUP) != nullptr && turn->coins() >= 5) button_sts[10]->setEnabled(true);
+            break;
+        case BARON: 
+            if (turn->coins() >= 3) button_sts[11]->setEnabled(true);
+            break;
+        default:
+            break;
     }
 }
 void GameWindow::disableButtons() {
@@ -244,7 +245,7 @@ void GameWindow::undoCoupPress() {
 void GameWindow::investPress() {
     Baron* turn = (Baron*)CUR_GAME->turn();
     Action* a = turn->invest();
-    sys_l->setText(QString("Player %1 3 coins and got 200% back!").arg(turn->index()+1));
+    sys_l->setText(QString("Player %1 invested 3 coins and got 200% back!").arg(turn->index()+1));
 }
 
 void GameWindow::nextTurn() {
@@ -278,6 +279,10 @@ void GameWindow::onMove() {
 
 vector<int> GameWindow::allowedButtons(Player* p) {
     std::vector<int> buttons;
+    if (p->coins() >= 10) {
+        buttons.push_back(5);
+        return buttons;
+    }
     if (p->ECONOMY) {
         buttons.push_back(0);
         buttons.push_back(1);
