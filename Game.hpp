@@ -41,7 +41,12 @@ namespace coup {
 			Action* LAST_COUP = nullptr;
 			Player* WINNER;
 		public:
-			Game(vector<Player*> players) : PLAYERS(players), TURN(players[0]), WINNER(nullptr) {};
+			Game(vector<Player*> players) : PLAYERS(players), TURN(players[0]), LAST_TAX(nullptr), LAST_ARREST(nullptr), LAST_BRIBE(nullptr), LAST_COUP(nullptr), WINNER(nullptr) {
+				for (Player* p : players) {
+					p->setCurrentGame(this);
+				}
+			};
+			~Game();
 			/*
 			 * Get last performed action according to type.
 			 */

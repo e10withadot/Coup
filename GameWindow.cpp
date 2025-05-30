@@ -1,8 +1,9 @@
-#include "Roles.hpp"
 #include <ctime>
+#include <iostream>
 #include <system_error>
 using namespace std;
 #include "GameWindow.hpp"
+#include "Roles.hpp"
 #include "Player.hpp"
 using namespace gui;
 
@@ -68,6 +69,8 @@ void GameWindow::refreshButtons() {
         for (int i = 0; i < 6; i++)
             button_sts[i]->setEnabled(false);
     else {
+        for (int i = 0; i < 6; i++)
+            button_sts[i]->setEnabled(true);
         if (!turn->ECONOMY) {
             button_sts[0]->setEnabled(false);
             button_sts[1]->setEnabled(false);
@@ -162,73 +165,85 @@ void GameWindow::seeCoinsPress() {
     int targetIndex;
     if ((targetIndex = playerSelect("Select a player to see their coins:")) < 0)
         throw errc::operation_canceled;
-    Action a = turn->see_coins(players[targetIndex]);
-    QMessageBox::information(this, "Coins Revealed", QString("Player %1 has %2 coins.").arg(targetIndex + 1).arg(a.reciever->coins()));
+    Action* a = turn->see_coins(players[targetIndex]);
+    QMessageBox::information(this, "Coins Revealed", QString("Player %1 has %2 coins.").arg(targetIndex + 1).arg(players[targetIndex]->coins()));
     gameLoop();
 }
 void GameWindow::gatherPress() {
     Player* turn = CUR_GAME->turn();
-    Action a = turn->gather();
-    sys_l->setText(QString("Player %1 gathered %2 coins.").arg(turn->index()+1).arg(a.coin_change));
+    Action* a = turn->gather();
+    sys_l->setText(QString("Player %1 gathered %2 coins.").arg(turn->index()+1).arg(a->coin_change));
 }
 void GameWindow::taxPress() {
     Player* turn = CUR_GAME->turn();
-    Action a = turn->tax();
-    CUR_GAME->setLast(TAX, &a);
-    sys_l->setText(QString("Player %1 took %2 coins from the pool.").arg(turn->index()+1).arg(a.coin_change));
+    Action* a = turn->tax();
+    CUR_GAME->setLast(TAX, a);
+    sys_l->setText(QString("Player %1 took %2 coins from the pool.").arg(turn->index()+1).arg(a->coin_change));
 }
 void GameWindow::undoTaxPress() {
+    if (CUR_GAME->getLast(TAX) == nullptr) {
+        sys_l->setText("No tax action to undo!");
+        return;
+    }
     Governor* turn = (Governor*)CUR_GAME->turn();
-    Action a = turn->undo_tax();
-    sys_l->setText(QString("Player %1 undoed Player %2's tax action!\nPlayer %2 lost %3 coins.").arg(turn->index()+1).arg(a.reciever->index()+1).arg(a.coin_change));
+    Action* a = turn->undo_tax();
+    sys_l->setText(QString("Player %1 undoed Player %2's tax action!\nPlayer %2 lost %3 coins.").arg(turn->index()+1).arg(a->reciever->index()+1).arg(a->coin_change));
 }
 void GameWindow::arrestPress() {
     Player* turn = CUR_GAME->turn();
     Player* target = selectionInterface(turn, "Select a player to arrest:");
-    Action a = turn->arrest(target);
-    CUR_GAME->setLast(ARREST, &a);
-    sys_l->setText(QString("Player %1 arrested Player %2! Player %2 lost %3 coin(s).").arg(turn->index()+1).arg(a.coin_change));
+    Action* a = turn->arrest(target);
+    CUR_GAME->setLast(ARREST, a);
+    sys_l->setText(QString("Player %1 arrested Player %2! Player %2 lost %3 coin(s).").arg(turn->index()+1).arg(target->index()+1).arg(a->coin_change));
 }
 
 void GameWindow::blockArrestPress() {
     Spy* turn = (Spy*)(CUR_GAME->turn());
     Player* target = selectionInterface(turn, "Select a player to block from doing arrests:");
-    Action a = turn->block_arrest(target);
+    Action* a = turn->block_arrest(target);
     sys_l->setText(QString("Player %1 blocked arrest on Player %2!").arg(turn->index() + 1).arg(target->index() + 1));
 }
 
 void GameWindow::bribePress() {
     Player* turn = CUR_GAME->turn();
-    Action a = turn->bribe();
-    CUR_GAME->setLast(BRIBE, &a);
+    Action* a = turn->bribe();
+    CUR_GAME->setLast(BRIBE, a);
     sys_l->setText(QString("Player %1 did a bribe! They get an additional turn next time!").arg(turn->index()+1));
 }
 void GameWindow::undoBribePress() {
+    if (CUR_GAME->getLast(BRIBE) == nullptr) {
+        sys_l->setText("No tax action to undo!");
+        return;
+    }
     Judge* turn = (Judge*)CUR_GAME->turn();
-    Action a = turn->undo_bribe();
-    sys_l->setText(QString("Player %1 undid Player %2's bribe!").arg(turn->index()+1).arg(a.reciever->index()+1));
+    Action* a = turn->undo_bribe();
+    sys_l->setText(QString("Player %1 undid Player %2's bribe!").arg(turn->index()+1).arg(a->reciever->index()+1));
 }
 void GameWindow::sanctionPress() {
     Player* turn = CUR_GAME->turn();
     Player* target = selectionInterface(turn, "Select a player to sanction:");
-    Action a = turn->sanction(target);
-    sys_l->setText(QString("Player %1 sanctioned Player %2!").arg(turn->index()+1).arg(a.reciever->index()+1));
+    Action* a = turn->sanction(target);
+    sys_l->setText(QString("Player %1 sanctioned Player %2!").arg(turn->index()+1).arg(target->index()+1));
 }
 void GameWindow::coupPress() {
     Player* turn = CUR_GAME->turn();
     Player* target = selectionInterface(turn, "Select a player to throw a coup on:");
-    Action a = turn->coup(target);
-    CUR_GAME->setLast(COUP, &a);
-    sys_l->setText(QString("Player %1 threw a coup on Player %2!").arg(turn->index()+1).arg(a.reciever->index()+1));
+    Action* a = turn->coup(target);
+    CUR_GAME->setLast(COUP, a);
+    sys_l->setText(QString("Player %1 threw a coup on Player %2!").arg(turn->index()+1).arg(target->index()+1));
 }
 void GameWindow::undoCoupPress() {
+    if (CUR_GAME->getLast(COUP) == nullptr) {
+        sys_l->setText("No tax action to undo!");
+        return;
+    }
     General* turn = (General*)CUR_GAME->turn();
-    Action a = turn->undo_coup();
-    sys_l->setText(QString("Player %1 undid the coup on Player %2!").arg(turn->index()+1).arg(a.reciever->index()+1));
+    Action* a = turn->undo_coup();
+    sys_l->setText(QString("Player %1 undid the coup on Player %2!").arg(turn->index()+1).arg(a->reciever->index()+1));
 }
 void GameWindow::investPress() {
     Baron* turn = (Baron*)CUR_GAME->turn();
-    Action a = turn->invest();
+    Action* a = turn->invest();
     sys_l->setText(QString("Player %1 3 coins and got 200% back!").arg(turn->index()+1));
 }
 
@@ -279,7 +294,7 @@ std::vector<int> GameWindow::allowedButtons(Player* p) {
     }
     switch (p->role()) {
         case GOVERNOR:
-            if (CUR_GAME->getLast(TAX) != nullptr) buttons.push_back(7);
+            if (CUR_GAME->getLast(TAX) != nullptr) buttons.push_back(7); 
             break;
         case SPY:
             buttons.push_back(6);

@@ -2,6 +2,7 @@
 #include <QCloseEvent>
 #include <QRandomGenerator>
 #include "MainWindow.hpp"
+#include "Game.hpp"
 #include "GameWindow.hpp"
 using namespace gui;
 #include <vector>

@@ -12,8 +12,8 @@ namespace coup {
 	class Spy : public Player {
 	public:
 		Spy(int index, bool cpu) : Player(index, cpu)  { this->ROLE = SPY; }
-		Action see_coins(Player* target);
-		Action block_arrest(Player* target);
+		Action* see_coins(Player* target);
+		Action* block_arrest(Player* target);
 	};
 	/* 
 	 * Takes an additional coin when doing a tax action. Can cancel others' tax actions.
@@ -21,8 +21,8 @@ namespace coup {
 	class Governor : public Player {
 	public:
 		Governor(int index, bool cpu) : Player(index, cpu)  { this->ROLE = GOVERNOR; }
-		Action tax() override;
-		Action undo_tax();
+		Action* tax() override;
+		Action* undo_tax();
 	};
 	/* 
 	 * Can cancel bribes, and forces a person to pay 1 coin if attacked with a sanction.
@@ -30,7 +30,7 @@ namespace coup {
 	class Judge : public Player {
 	public:
 		Judge(int index, bool cpu) : Player(index, cpu)  { this->ROLE = JUDGE; }
-		Action undo_bribe();
+		Action* undo_bribe();
 		void sanction_resp(Player* sender) override;
 	};
 	/*
@@ -50,7 +50,7 @@ namespace coup {
 	class Baron : public Player {
 	public:
 		Baron(int index, bool cpu) : Player(index, cpu)  { this->ROLE = BARON; }
-		Action invest();
+		Action* invest();
 		void sanction_resp(Player* sender) override;
 	};
 	/*
@@ -60,7 +60,7 @@ namespace coup {
 	class General : public Player {
 	public:
 		General(int index, bool cpu) : Player(index, cpu)  { this->ROLE = GENERAL; }
-		Action undo_coup();
+		Action* undo_coup();
 		int arrest_resp() override;
 	};
 }

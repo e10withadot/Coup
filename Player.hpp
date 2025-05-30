@@ -26,26 +26,30 @@ namespace coup {
 			Player(int index, bool CPU) : CPU(CPU), INDEX(index) {};
 			virtual ~Player() {}
 			/*
+			 * Sets the current game value;
+			*/
+			void setCurrentGame(Game* game);
+			/*
 			 * Function that runs when Player's turn starts.
 			*/
 			virtual void start_turn();
 			/*
 			 * Get one coin from the pool.
 			*/
-			Action gather();
+			Action* gather();
 			/*
 			 * Get two coins from the pool.
 			*/
-			virtual Action tax();
+			virtual Action* tax();
 			/*
 			 * Pay four coins to perform an additional action in the next turn.
 			*/
-			Action bribe();
+			Action* bribe();
 			/*
 			 * Get one coin from a different player.
 			 * Cannot be used on the same player twice in a row.
 			*/
-			Action arrest(Player* target);
+			Action* arrest(Player* target);
 			/*
 			 * Player's response to arrest.
 			 */
@@ -53,7 +57,7 @@ namespace coup {
 			/* 
 			 * Blocks a player from performing economic actions. Costs 3 coins.
 			*/
-			virtual Action sanction(Player* target);
+			virtual Action* sanction(Player* target);
 			/*
 			 * Player's response to sanction.
 			 */
@@ -61,7 +65,7 @@ namespace coup {
 			/*
 			 * Eliminates a player from the game. Costs 7 coins.
 			*/
-			Action coup(Player* target);
+			Action* coup(Player* target);
 			/*
 			 * Player's response to coup.
 			 */
