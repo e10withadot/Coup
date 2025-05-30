@@ -84,6 +84,7 @@ TEST_CASE("General abilities") {
     Action* coup_action = p1->coup(p2);
     CHECK(coup_action->type == COUP);
     CHECK(p2->LOST == true);
+    game.setLast(COUP, coup_action);
 
     p1->COINS = 5;
     Action* undo_action = p1->undo_coup();
@@ -96,8 +97,10 @@ TEST_CASE("Judge abilities") {
     Spy* p2 = new Spy(1, false);
     vector<Player*> players = {p1, p2};
     Game game(players);
+    p1->COINS = 4;
+    Action* bribe_action = p1->bribe();
+    game.setLast(BRIBE, bribe_action);
 
-    p2->ADDITIONAL = true;
     Action* undo_bribe = p1->undo_bribe();
     CHECK(undo_bribe->type == UNDOBRIBE);
     CHECK(p2->ADDITIONAL == false);

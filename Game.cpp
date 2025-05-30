@@ -13,11 +13,6 @@ Game::~Game() {
 }
 
 Action* Game::getLast(ActionType type){
-    cout << "this: " << (this == nullptr)
-        << "\nTax: " << (LAST_TAX == nullptr)
-        << "\nArrest: " << (LAST_ARREST == nullptr)
-        << "\nBribe: " << (LAST_BRIBE == nullptr)
-        << "\nCoup: " << (LAST_COUP == nullptr) << "\n";
     switch (type) {
         case TAX:
             return this->LAST_TAX;
@@ -35,20 +30,16 @@ Action* Game::getLast(ActionType type){
 void Game::setLast(ActionType type, Action* val){
     switch (type) {
         case TAX:
-            delete this->LAST_TAX;
-            this->LAST_TAX= val;
+            LAST_TAX= val;
             break;
         case ARREST:
-            delete this->LAST_ARREST;
-            this->LAST_ARREST= val;
+            LAST_ARREST= val;
             break;
         case BRIBE:
-            delete this->LAST_BRIBE;
-            this->LAST_BRIBE= val;
+            LAST_BRIBE= val;
             break;
         case COUP:
-            delete this->LAST_COUP;
-            this->LAST_COUP= val;
+            LAST_COUP= val;
             break;
         default:
             break;

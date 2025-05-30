@@ -8,7 +8,6 @@ using namespace std;
 void Player::setCurrentGame(Game* game) {
     CUR_GAME = game;
 }
-
 void Player::start_turn() {}
 
 Action* Player::gather() {

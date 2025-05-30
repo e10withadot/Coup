@@ -92,7 +92,7 @@ void GameWindow::refreshButtons() {
                 if (CUR_GAME->getLast(TAX) != nullptr) button_sts[8]->setEnabled(true);
                 break;
             case JUDGE:
-                if (CUR_GAME->getLast(BRIBE) != nullptr)button_sts[9]->setEnabled(true);
+                if (CUR_GAME->getLast(BRIBE) != nullptr) button_sts[9]->setEnabled(true);
                 break;
             case GENERAL:
                 if (CUR_GAME->getLast(COUP) != nullptr && turn->coins() >= 5) button_sts[10]->setEnabled(true);
