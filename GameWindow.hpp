@@ -28,12 +28,14 @@ namespace gui {
  			GameWindow(vector<Player*> players);
 			void refreshButtons();
 			void refreshLabels();
-			int playerSelect();
 			void gameLoop();
 			void nextTurn();
 		private:
 			Game* CUR_GAME;
 			bool button_event;
+			vector<int> allowedButtons(Player* p);
+			int playerSelect(const char* msg);
+			Player* selectionInterface(Player* turn, const char* msg);
 		signals:
 			void moveComplete();
 		private slots:

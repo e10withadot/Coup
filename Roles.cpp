@@ -28,16 +28,16 @@ Action Governor::tax() {
 }
 
 Action Governor::undo_tax() {
-    Action last_tax = this->game()->getLast(TAX);
-    Player* target = last_tax.reciever;
-    int amount = last_tax.coin_change;
+    Action* last_tax = this->game()->getLast(TAX);
+    Player* target = last_tax->reciever;
+    int amount = last_tax->coin_change;
     target->mod_coins(-amount);
     return Action(UNDOTAX, this, target, amount);
 }
 
 Action General::undo_coup() {
-    Action last_coup = this->game()->getLast(COUP);
-    Player *target = last_coup.reciever;
+    Action* last_coup = this->game()->getLast(COUP);
+    Player *target = last_coup->reciever;
     target->LOST = false;
     return Action(UNDOCOUP, this, target, 0);
 }
@@ -57,8 +57,8 @@ void Baron::sanction_resp(Player* sender) {
 }
 
 Action Judge::undo_bribe() {
-    Action last_bribe = this->game()->getLast(BRIBE);
-    Player *target = last_bribe.reciever;
+    Action* last_bribe = this->game()->getLast(BRIBE);
+    Player *target = last_bribe->reciever;
     target->ADDITIONAL = false;
     return Action(UNDOBRIBE, this, target, 0);
 }

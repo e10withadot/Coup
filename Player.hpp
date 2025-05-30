@@ -24,6 +24,7 @@ namespace coup {
 			bool ADDITIONAL = false;
 			bool LOST = false;
 			Player(int index, bool CPU) : CPU(CPU), INDEX(index) {};
+			virtual ~Player() {}
 			/*
 			 * Function that runs when Player's turn starts.
 			*/

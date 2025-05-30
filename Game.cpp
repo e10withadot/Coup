@@ -1,10 +1,9 @@
 #include "Game.hpp"
 using namespace coup;
-#include <stdexcept>
 #include <vector>
 using namespace std;
 
-Action Game::getLast(ActionType type){
+Action* Game::getLast(ActionType type){
     switch (type) {
         case TAX:
             return this->LAST_TAX;
@@ -15,22 +14,26 @@ Action Game::getLast(ActionType type){
         case COUP:
             return this->LAST_COUP;
         default:
-            throw invalid_argument("Invalid action type.");
+            return new Action();
     };
 }
 
-void Game::setLast(ActionType type, Action val){
+void Game::setLast(ActionType type, Action* val){
     switch (type) {
         case TAX:
             this->LAST_TAX= val;
+            break;
         case ARREST:
             this->LAST_ARREST= val;
+            break;
         case BRIBE:
             this->LAST_BRIBE= val;
+            break;
         case COUP:
             this->LAST_COUP= val;
+            break;
         default:
-            throw invalid_argument("Invalid action type.");
+            break;
     };
 }
 
@@ -45,6 +48,7 @@ void Game::moveTurn() {
     else index = TURN->index()+1;
     if(PLAYERS[index]->LOST) {
         PLAYERS.erase(PLAYERS.begin() + index);
+        if (LAST_COUP->reciever->index() == index) LAST_COUP = nullptr;
         if (PLAYERS.size() == 1) WINNER = PLAYERS[0];
         else moveTurn();
     }

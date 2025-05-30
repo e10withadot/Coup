@@ -35,21 +35,21 @@ namespace coup {
 		private:
 			Player* TURN;
 			vector<Player*> PLAYERS;
-			Action LAST_TAX;
-			Action LAST_ARREST;
-			Action LAST_BRIBE;
+			Action* LAST_TAX;
+			Action* LAST_ARREST;
+			Action* LAST_BRIBE;
+			Action* LAST_COUP;
 			Player* WINNER;
-			Action LAST_COUP;
 		public:
 			Game(vector<Player*> players) : PLAYERS(players), TURN(players[0]) {};
 			/*
 			 * Get last performed action according to type.
 			 */
-			Action getLast(ActionType type);
+			Action* getLast(ActionType type);
 			/*
 			 * Set last performed action according to type.
 			 */
-			void setLast(ActionType type, Action val);
+			void setLast(ActionType type, Action* val);
 			/*
 			 * Gets the Player whose turn it is.
 			*/
