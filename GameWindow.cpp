@@ -194,7 +194,7 @@ void GameWindow::arrestPress() {
     Player* target = selectionInterface(turn, "Select a player to arrest:");
     Action* a = turn->arrest(target);
     CUR_GAME->setLast(ARREST, a);
-    sys_l->setText(QString("Player %1 arrested Player %2! Player %2 lost %3 coin(s).").arg(turn->index()+1).arg(target->index()+1).arg(a->coin_change));
+    sys_l->setText(QString("Player %1 arrested Player %2! Player %2 gave %3 coin(s) to Player %1.").arg(turn->index()+1).arg(target->index()+1).arg(a->coin_change));
 }
 
 void GameWindow::blockArrestPress() {
@@ -212,7 +212,7 @@ void GameWindow::bribePress() {
 }
 void GameWindow::undoBribePress() {
     if (CUR_GAME->getLast(BRIBE) == nullptr) {
-        sys_l->setText("No tax action to undo!");
+        sys_l->setText("No bribe action to undo!");
         return;
     }
     Judge* turn = (Judge*)CUR_GAME->turn();
@@ -234,7 +234,7 @@ void GameWindow::coupPress() {
 }
 void GameWindow::undoCoupPress() {
     if (CUR_GAME->getLast(COUP) == nullptr) {
-        sys_l->setText("No tax action to undo!");
+        sys_l->setText("No coup action to undo!");
         return;
     }
     General* turn = (General*)CUR_GAME->turn();
@@ -276,7 +276,7 @@ void GameWindow::onMove() {
     });
 }
 
-std::vector<int> GameWindow::allowedButtons(Player* p) {
+vector<int> GameWindow::allowedButtons(Player* p) {
     std::vector<int> buttons;
     if (p->ECONOMY) {
         buttons.push_back(0);
@@ -330,7 +330,7 @@ void GameWindow::gameLoop() {
 
     if (turn->cpu()) {
         QTimer::singleShot(2000, this, [this, turn]() {
-            std::vector<int> allowed = allowedButtons(turn);
+            vector<int> allowed = allowedButtons(turn);
             if (!allowed.empty()) {
                 int choice = QRandomGenerator::global()->bounded(static_cast<int>(allowed.size()));
                 int index = allowed[choice];
