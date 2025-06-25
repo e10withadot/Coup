@@ -3,8 +3,11 @@ project(Coup LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
+
+qt_standard_project_setup()
 
 set(SOURCES
     main.cpp
@@ -14,6 +17,7 @@ set(SOURCES
     Game.cpp
     Player.cpp
 )
-add_executable(Coup ${SOURCES})
+
+qt_add_executable(Coup ${SOURCES})
 
 target_link_libraries(Coup PRIVATE Qt6::Widgets)
