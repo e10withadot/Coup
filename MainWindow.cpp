@@ -46,34 +46,34 @@ void MainWindow::startSetup() {
 
     QVector<int> roleIndices;
     for (int i = 0; i < 6; ++i) roleIndices.push_back(i);
-	int h_ind;
+    int h_ind;
     for (int i = 0; i < pnum; ++i) {
-		int choice = QRandomGenerator::global()->bounded(0, 6);
-		bool is_cpu = (i != 0);
-		if(!is_cpu)
-			h_ind = choice;
+        int choice = QRandomGenerator::global()->bounded(0, 6);
+        bool is_cpu = (i != 0);
+        if(!is_cpu)
+            h_ind = choice;
         Player* p;
         switch (choice) {
             case 0:
-		    p = new Spy(i, is_cpu);
-		    break;
+                p = new Spy(i, is_cpu);
+                break;
             case 1:
-		    p = new Governor(i, is_cpu);
-		    break;
+                p = new Governor(i, is_cpu);
+                break;
             case 2:
-		    p = new Judge(i, is_cpu);
-		    break;
+                p = new Judge(i, is_cpu);
+                break;
             case 3:
-		    p = new Merchant(i, is_cpu);
-		    break;
+                p = new Merchant(i, is_cpu);
+                break;
             case 4:
-		    p = new General(i, is_cpu);
-		    break;
+                p = new General(i, is_cpu);
+                break;
             case 5:
-		    p = new Baron(i, is_cpu);
-		    break;
+                p = new Baron(i, is_cpu);
+                break;
             default:
-		    throw std::invalid_argument("Invalid role.");
+                throw std::invalid_argument("Invalid role.");
         }
         players.push_back(p);
     }

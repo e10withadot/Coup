@@ -9,16 +9,16 @@
 using namespace coup;
 
 namespace gui {
-	class GameWindow;
-	class MainWindow : public QWidget {
-		public:
-			QSpinBox* pnumSpin;
-			QVBoxLayout* layout;
-			QVector<QWidget*> playerWidgets;
-			QPushButton* startButton;
-			MainWindow();
-		private slots:
-			void startSetup();
-			void startGame();
-	};
+class GameWindow;
+class MainWindow : public QWidget {
+public:
+    QSpinBox* pnumSpin;
+    QVBoxLayout* layout;
+    QVector<QWidget*> playerWidgets;
+    QPushButton* startButton;
+    MainWindow();
+private slots:
+    void startSetup();
+    void startGame();
+};
 }
